@@ -128,4 +128,28 @@ public class User {
     public void setFriends(List<User> friends) {
         this.friends = friends;
     }
+
+    public List<Chat> getInitiatedChats() {
+        return initiatedChats;
+    }
+
+    public void setInitiatedChats(List<Chat> initiatedChats) {
+        this.initiatedChats = initiatedChats;
+    }
+
+    public List<Chat> getReceivedChats() {
+        return receivedChats;
+    }
+
+    public void setReceivedChats(List<Chat> receivedChats) {
+        this.receivedChats = receivedChats;
+    }
+
+    public List<Activity> getAttendedActivities() {
+        return attendedActivities;
+    }
+
+    public void setAttendedActivities(List<Activity> attendedActivities) {
+        this.attendedActivities = attendedActivities;
+    }
 }
