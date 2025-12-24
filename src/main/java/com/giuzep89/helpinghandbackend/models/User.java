@@ -2,6 +2,7 @@ package com.giuzep89.helpinghandbackend.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,15 +28,42 @@ public class User {
     @Column(length = 1000)
     private String competencies; // it's mostly called "things I can do" in the frontend
 
-    private List<String> prizes;
+    @ElementCollection(targetClass = Prize.class)
+    @CollectionTable(name = "user_prizes", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private List<Prize> prizes = new ArrayList<>();
 
-    private List<User> friends;
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private List<User> friends = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userOne")
+    private List<Chat> initiatedChats  = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userTwo")
+    private List<Chat> receivedChats  = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_activities", // The name of the middle table in the DB
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
+    private List<Activity> attendedActivities = new ArrayList<>();
 
 // TODO Add list of Authorities + authority methods
 
 
 
     // Getters and setters
+
+    public Long getId() {
+        return id;
+    }
 
     public String getEmail() {
         return email;
@@ -85,11 +113,11 @@ public class User {
         this.competencies = competencies;
     }
 
-    public List<String> getPrizes() {
+    public List<Prize> getPrizes() {
         return prizes;
     }
 
-    public void setPrizes(List<String> prizes) {
+    public void setPrizes(List<Prize> prizes) {
         this.prizes = prizes;
     }
 

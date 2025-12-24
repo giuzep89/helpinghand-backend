@@ -1,18 +1,36 @@
 package com.giuzep89.helpinghandbackend.models;
 
-public class HelpRequest extends Post {
-    private HelpType helpType;
-    private boolean helpFound;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "help_requests")
+public class HelpRequest extends Post {
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private HelpType helpType;
+
+    private String requestDescription;
+
+    private boolean helpFound = false;
+
+    // Constructors
     public HelpRequest() {
         super();
     }
 
-    public HelpRequest(User author, String description, String location, HelpType helpType, boolean helpFound) {
+    public HelpRequest(User author, String description, String location, HelpType helpType) {
         super(author, description, location);
         this.helpType = helpType;
-        this.helpFound = false;
     }
 
+    // Getters and Setters
+    public HelpType getHelpType() { return helpType; }
+    public void setHelpType(HelpType helpType) { this.helpType = helpType; }
 
+    public String getRequestDescription() { return requestDescription; }
+    public void setRequestDescription(String requestDescription) { this.requestDescription = requestDescription; }
+
+    public boolean isHelpFound() { return helpFound; }
+    public void setHelpFound(boolean helpFound) { this.helpFound = helpFound; }
 }

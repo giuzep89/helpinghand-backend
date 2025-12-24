@@ -13,6 +13,8 @@ public abstract class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private User author;
 
     @Column(nullable = false, length = 300)
@@ -22,6 +24,14 @@ public abstract class Post {
     private LocalDateTime createdAt;
 
     private String location;
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     // Constructors
     public Post() {}

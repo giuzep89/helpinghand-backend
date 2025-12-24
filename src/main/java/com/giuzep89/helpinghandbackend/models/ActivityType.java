@@ -5,15 +5,15 @@ public enum ActivityType {
     CULTURE("Culture"),
     VOLUNTEERING("Volunteering"),
     SOCIAL("Social"),
-    LEARNING("Learning");
+    EDUCATIONAL("Educational");
 
-    private final String description;
+    private final String activityType;
 
-    ActivityType(String description) {
-        this.description = description;
+    ActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
-    public String getDescription() {
-        return description;
+    public String getActivityType() {
+        return activityType;
     }
 }
