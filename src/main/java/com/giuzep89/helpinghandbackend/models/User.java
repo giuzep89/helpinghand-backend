@@ -60,7 +60,6 @@ public class User {
 
 
     // Getters and setters
-
     public Long getId() {
         return id;
     }

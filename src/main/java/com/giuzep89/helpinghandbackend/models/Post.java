@@ -23,6 +23,7 @@ public abstract class Post {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    // TODO Move these under constructors?
     private String location;
 
     public User getAuthor() {

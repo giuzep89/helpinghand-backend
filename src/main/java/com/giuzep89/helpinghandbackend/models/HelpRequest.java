@@ -9,9 +9,6 @@ public class HelpRequest extends Post {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private HelpType helpType;
-
-    private String requestDescription;
-
     private boolean helpFound = false;
 
     // Constructors
@@ -27,9 +24,6 @@ public class HelpRequest extends Post {
     // Getters and Setters
     public HelpType getHelpType() { return helpType; }
     public void setHelpType(HelpType helpType) { this.helpType = helpType; }
-
-    public String getRequestDescription() { return requestDescription; }
-    public void setRequestDescription(String requestDescription) { this.requestDescription = requestDescription; }
 
     public boolean isHelpFound() { return helpFound; }
     public void setHelpFound(boolean helpFound) { this.helpFound = helpFound; }
