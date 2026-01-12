@@ -22,7 +22,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    private short age;
+    private Short age;
     private String location;
 
     @Column(length = 1000)
@@ -89,11 +89,11 @@ public class User {
         this.username = username;
     }
 
-    public short getAge() {
+    public Short getAge() {
         return age;
     }
 
-    public void setAge(short age) {
+    public void setAge(Short age) {
         this.age = age;
     }
 
