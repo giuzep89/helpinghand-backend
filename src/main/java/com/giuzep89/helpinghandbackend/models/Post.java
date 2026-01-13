@@ -23,16 +23,9 @@ public abstract class Post {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // TODO Move these under constructors?
+    @Column(nullable = true)
     private String location;
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 
     // Constructors
     public Post() {}
@@ -44,6 +37,44 @@ public abstract class Post {
         this.createdAt = LocalDateTime.now();
     }
 
+    // Getters and setters
+    public User getAuthor() {
+        return author;
+    }
 
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

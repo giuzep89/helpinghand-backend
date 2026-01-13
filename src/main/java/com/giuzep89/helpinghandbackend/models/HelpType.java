@@ -1,20 +1,20 @@
 package com.giuzep89.helpinghandbackend.models;
 
 public enum HelpType {
-    GARDENING("Gardening", Prize.GARDENING),
-    TAXES("Taxes", Prize.TAXES),
-    COMPANY("Company", Prize.COMPANY),
-    PLUMBING("Plumbing", Prize.PLUMBING),
-    PAINTING("Painting", Prize.PAINTING),
-    MOVING("Moving", Prize.MOVING),
+    GARDENING("gardening", Prize.GARDENING),
+    TAXES("taxes", Prize.TAXES),
+    COMPANY("company", Prize.COMPANY),
+    PLUMBING("plumbing", Prize.PLUMBING),
+    PAINTING("painting", Prize.PAINTING),
+    MOVING("moving", Prize.MOVING),
     IT("IT Support", Prize.IT),
-    BUREAUCRACY("Bureaucracy", Prize.BUREAUCRACY),
-    LANGUAGE("Language", Prize.LANGUAGE),
-    GROCERIES("Groceries", Prize.GROCERIES),
-    PETSITTING("Pet Sitting", Prize.PETSITTING),
-    TRANSPORT("Transport", Prize.TRANSPORT),
-    REPAIRS("Repairs", Prize.REPAIRS),
-    HOUSE_CHORES("House Chores", Prize.HOUSE_CHORES);
+    BUREAUCRACY("bureaucracy", Prize.BUREAUCRACY),
+    LANGUAGE("language", Prize.LANGUAGE),
+    GROCERIES("groceries", Prize.GROCERIES),
+    PETSITTING("pet sitting", Prize.PETSITTING),
+    TRANSPORT("transport", Prize.TRANSPORT),
+    REPAIRS("repairs", Prize.REPAIRS),
+    HOUSE_CHORES("house chores", Prize.HOUSE_CHORES);
 
     private String helpType;
     private Prize prize;

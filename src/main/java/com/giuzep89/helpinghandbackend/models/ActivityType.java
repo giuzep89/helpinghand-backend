@@ -1,11 +1,11 @@
 package com.giuzep89.helpinghandbackend.models;
 
 public enum ActivityType {
-    SPORTS("Sports"),
-    CULTURE("Culture"),
-    VOLUNTEERING("Volunteering"),
-    SOCIAL("Social"),
-    EDUCATIONAL("Educational");
+    SPORTS("sports"),
+    CULTURE("cultural"),
+    VOLUNTEERING("volunteering"),
+    SOCIAL("social"),
+    EDUCATIONAL("educational");
 
     private final String activityType;
 

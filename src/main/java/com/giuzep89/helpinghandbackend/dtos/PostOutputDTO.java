@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class PostOutputDTO {
     private Long id;
-    private String title;          // Will hold either the custom Activity title or the "Stock" Help title
+    private String displayTitle;  // To hold pre-made titles for either activities or helprequest (user doesn't write titles manually)
     private String description;
     private String location;
     private String authorUsername;
@@ -34,12 +34,12 @@ public class PostOutputDTO {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDisplayTitle() {
+        return displayTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDisplayTitle(String displayTitle) {
+        this.displayTitle = displayTitle;
     }
 
     public String getDescription() {
