@@ -16,16 +16,16 @@ public enum HelpType {
     REPAIRS("repairs", Prize.REPAIRS),
     HOUSE_CHORES("house chores", Prize.HOUSE_CHORES);
 
-    private String helpType;
+    private String displayName;
     private Prize prize;
 
-    HelpType(String helpType, Prize prize) {
-        this.helpType = helpType;
+    HelpType(String displayName, Prize prize) {
+        this.displayName = displayName;
         this.prize = prize;
     }
 
-    public String getHelpType() {
-        return helpType;
+    public String getDisplayName() {
+        return displayName;
     }
 
     public Prize getPrize() {

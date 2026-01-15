@@ -16,7 +16,6 @@ public class HelpRequestInputDTO {
 
 
     // Getters and Setters
-
     public String getDescription() {
         return description;
     }

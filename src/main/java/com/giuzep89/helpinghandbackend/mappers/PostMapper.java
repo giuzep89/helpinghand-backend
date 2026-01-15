@@ -30,6 +30,7 @@ public class PostMapper {
         return entity;
     }
 
+    // Joined OutputDTO for ease of data retrieval in the frontend
     public static PostOutputDTO toDTO(Post post) {
         PostOutputDTO dto = new PostOutputDTO();
 
@@ -50,7 +51,7 @@ public class PostMapper {
             if (helpRequest.getHelpType() == HelpType.COMPANY) {
                 dto.setDisplayTitle("I'd love to have some company!");
             } else {
-                dto.setDisplayTitle("I need some help with " + helpRequest.getHelpType() + "!");
+                dto.setDisplayTitle("I need some help with " + helpRequest.getHelpType().getDisplayName() + "!");
             }
         } else if (post instanceof Activity) {
             Activity activity = (Activity) post;
