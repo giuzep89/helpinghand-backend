@@ -25,7 +25,6 @@ public class Message {
     private LocalDateTime timestamp;
 
     // Constructors
-
     public Message() {}
 
     public Message(Chat chat, User sender, String content) {
@@ -36,7 +35,6 @@ public class Message {
     }
 
     // Getters and Setters
-
     public Long getId() {
         return id;
     }
