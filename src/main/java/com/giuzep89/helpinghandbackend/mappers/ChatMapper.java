@@ -33,4 +33,10 @@ public class ChatMapper {
 
         return dto;
     }
+
+    public static Chat toEntity() {
+        // Adding a toEntity here just for convention, but it'll otherwise
+        // be filled straight in the Service
+        return new Chat();
+    }
 }

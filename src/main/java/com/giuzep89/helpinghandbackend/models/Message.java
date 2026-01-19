@@ -34,6 +34,7 @@ public class Message {
         this.timestamp = LocalDateTime.now();
     }
 
+
     // Getters and Setters
     public Long getId() {
         return id;

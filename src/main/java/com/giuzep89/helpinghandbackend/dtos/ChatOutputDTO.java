@@ -8,15 +8,36 @@ public class ChatOutputDTO {
     private String lastMessageContent;
     private LocalDateTime lastMessageTime;
 
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
     public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setOtherUserUsername(String username) {
+    public String getOtherUserUsername() {
+        return otherUserUsername;
     }
 
-    public void setLastMessageContent(String content) {
+    public void setOtherUserUsername(String otherUserUsername) {
+        this.otherUserUsername = otherUserUsername;
     }
 
-    public void setLastMessageTime(LocalDateTime timestamp) {
+    public String getLastMessageContent() {
+        return lastMessageContent;
+    }
+
+    public void setLastMessageContent(String lastMessageContent) {
+        this.lastMessageContent = lastMessageContent;
+    }
+
+    public LocalDateTime getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime(LocalDateTime lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
     }
 }
