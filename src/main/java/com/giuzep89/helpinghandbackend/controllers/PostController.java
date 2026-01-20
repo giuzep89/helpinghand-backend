@@ -48,7 +48,7 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/help-requests/{id}/found")
+    @PatchMapping("/help-requests/{id}/help-found")
     public ResponseEntity<PostOutputDTO> markHelpFound(
             @PathVariable Long id,
             @RequestBody List<Long> prizeRecipientIds,
