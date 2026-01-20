@@ -96,10 +96,8 @@ public class PostService {
         for (Long recipientId : prizeRecipientIds) {
             User recipient = userRepository.findById(recipientId)
                     .orElseThrow(() -> new RecordNotFoundException("User not found with id: " + recipientId));
-            if (!recipient.getPrizes().contains(prize)) {
-                recipient.getPrizes().add(prize);
-                userRepository.save(recipient);
-            }
+            recipient.getPrizes().add(prize);
+            userRepository.save(recipient);
         }
 
         Post savedPost = postRepository.save(helpRequest);
