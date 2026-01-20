@@ -32,8 +32,11 @@ public class ChatService {
         User recipient = userRepository.findById(recipientId)
                 .orElseThrow(() -> new RecordNotFoundException("Recipient not found"));
 
-        // Check if chat already exists between the two users
-        Optional<Chat> existingChat = chatRepository.findChatBetweenUsers(currentUser, recipient);
+        // Check if chat already exists between the two users (check both directions)
+        Optional<Chat> existingChat = chatRepository.findByUserOneAndUserTwo(currentUser, recipient);
+        if (existingChat.isEmpty()) {
+            existingChat = chatRepository.findByUserOneAndUserTwo(recipient, currentUser);
+        }
         if (existingChat.isPresent()) {
             return ChatMapper.toDTO(existingChat.get(), currentUsername);
         }

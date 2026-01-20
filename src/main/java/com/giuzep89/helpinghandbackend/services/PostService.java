@@ -9,6 +9,7 @@ import com.giuzep89.helpinghandbackend.mappers.PostMapper;
 import com.giuzep89.helpinghandbackend.models.Activity;
 import com.giuzep89.helpinghandbackend.models.HelpRequest;
 import com.giuzep89.helpinghandbackend.models.Post;
+import com.giuzep89.helpinghandbackend.models.Prize;
 import com.giuzep89.helpinghandbackend.models.User;
 import com.giuzep89.helpinghandbackend.repositories.PostRepository;
 import com.giuzep89.helpinghandbackend.repositories.UserRepository;
@@ -77,12 +78,57 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    public PostOutputDTO markHelpFound(Long postId, List<Long> prizeRecipientIds, String username) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RecordNotFoundException("Post not found"));
 
+        if (!(post instanceof HelpRequest helpRequest)) {
+            throw new IllegalArgumentException("Post is not a HelpRequest");
+        }
 
+        if (!post.getAuthor().getUsername().equals(username)) {
+            throw new UnauthorizedException("Only the author can mark help as found");
+        }
 
+        helpRequest.setHelpFound(true);
+        Prize prize = helpRequest.getHelpType().getPrize();
 
+        for (Long recipientId : prizeRecipientIds) {
+            User recipient = userRepository.findById(recipientId)
+                    .orElseThrow(() -> new RecordNotFoundException("User not found with id: " + recipientId));
+            if (!recipient.getPrizes().contains(prize)) {
+                recipient.getPrizes().add(prize);
+                userRepository.save(recipient);
+            }
+        }
 
+        Post savedPost = postRepository.save(helpRequest);
+        return PostMapper.toDTO(savedPost);
+    }
 
+    public PostOutputDTO joinActivity(Long postId, String username) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RecordNotFoundException("Post not found"));
+
+        if (!(post instanceof Activity activity)) {
+            throw new IllegalArgumentException("Post is not an Activity");
+        }
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RecordNotFoundException("User not found"));
+
+        if (!activity.getAttendees().contains(user)) {
+            activity.getAttendees().add(user);
+        }
+
+        if (!user.getAttendedActivities().contains(activity)) {
+            user.getAttendedActivities().add(activity);
+        }
+
+        userRepository.save(user);
+        Post savedPost = postRepository.save(activity);
+        return PostMapper.toDTO(savedPost);
+    }
 
 
 }
