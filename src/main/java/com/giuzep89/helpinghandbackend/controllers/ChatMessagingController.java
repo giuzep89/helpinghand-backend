@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 
@@ -34,7 +36,12 @@ public class ChatMessagingController {
             @RequestBody Long recipientId,
             @RequestParam String username) {
         ChatOutputDTO created = chatService.createChat(recipientId, username);
-        return ResponseEntity.created(URI.create("/chats/" + created.getId())).body(created);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @GetMapping("/{id}")
@@ -58,6 +65,11 @@ public class ChatMessagingController {
             @RequestParam String username) {
         messageInputDTO.setChatId(chatId);
         MessageOutputDTO created = messageService.sendMessage(messageInputDTO, username);
-        return ResponseEntity.created(URI.create("/chats/" + chatId + "/messages/" + created.getId())).body(created);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 }

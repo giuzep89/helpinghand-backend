@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 
@@ -31,7 +33,12 @@ public class PostController {
             @Valid @RequestBody HelpRequestInputDTO helpRequestInputDTO,
             @RequestParam String username) {
         PostOutputDTO created = postService.createHelpRequest(helpRequestInputDTO, username);
-        return ResponseEntity.created(URI.create("/posts/" + created.getId())).body(created);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PostMapping("/activities")
@@ -39,7 +46,12 @@ public class PostController {
             @Valid @RequestBody ActivityInputDTO activityInputDTO,
             @RequestParam String username) {
         PostOutputDTO created = postService.createActivity(activityInputDTO, username);
-        return ResponseEntity.created(URI.create("/posts/" + created.getId())).body(created);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @DeleteMapping("/{id}")
