@@ -23,6 +23,13 @@ public class UserService {
     // TODO Implement UserDetailsService.loadUserByUsername for authentication
     // TODO Add authority/role management methods
 
+    public List<UserOutputDTO> searchUsers(String query, String currentUsername) {
+        return userRepository.findByUsernameContainingIgnoreCase(query).stream()
+                .filter(user -> !user.getUsername().equals(currentUsername))
+                .map(UserMapper::toDTO)
+                .toList();
+    }
+
     public UserOutputDTO getUser(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));

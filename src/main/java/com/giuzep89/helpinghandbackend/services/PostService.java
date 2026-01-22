@@ -13,8 +13,10 @@ import com.giuzep89.helpinghandbackend.models.Prize;
 import com.giuzep89.helpinghandbackend.models.User;
 import com.giuzep89.helpinghandbackend.repositories.PostRepository;
 import com.giuzep89.helpinghandbackend.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,21 +32,17 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    public List<PostOutputDTO> getAllPosts(String username) {
+    public Page<PostOutputDTO> getAllPosts(String username, int page, int size) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));
 
-        List<PostOutputDTO> postsToRetrieve = new ArrayList<>();
         List<User> allUsersOnFeed = new ArrayList<>(user.getFriends());
         allUsersOnFeed.add(user);
 
-        for (User userOnFeed : allUsersOnFeed) {
-            List<Post> allPosts = postRepository.findAllByAuthorId(userOnFeed.getId());
-            for (Post post : allPosts) {
-                postsToRetrieve.add(PostMapper.toDTO(post));
-            }
-        }
-        return postsToRetrieve;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> posts = postRepository.findByAuthorInOrderByCreatedAtDesc(allUsersOnFeed, pageable);
+
+        return posts.map(PostMapper::toDTO);
     }
 
     public PostOutputDTO createHelpRequest(HelpRequestInputDTO helpRequestInputDTO, String username) {

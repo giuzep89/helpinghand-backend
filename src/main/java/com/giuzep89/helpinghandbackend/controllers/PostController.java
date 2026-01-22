@@ -5,6 +5,7 @@ import com.giuzep89.helpinghandbackend.dtos.HelpRequestInputDTO;
 import com.giuzep89.helpinghandbackend.dtos.PostOutputDTO;
 import com.giuzep89.helpinghandbackend.services.PostService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,11 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostOutputDTO>> getAllPosts(@RequestParam String username) {
-        return ResponseEntity.ok(postService.getAllPosts(username));
+    public ResponseEntity<Page<PostOutputDTO>> getAllPosts(
+            @RequestParam String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(postService.getAllPosts(username, page, size));
     }
 
     @PostMapping("/help-requests")

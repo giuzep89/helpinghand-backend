@@ -21,6 +21,13 @@ public class UserController {
     // TODO Add POST /users/register endpoint (Spring Security - password encoding)
     // TODO Add POST /users/login endpoint (Spring Security - authentication)
 
+    @GetMapping
+    public ResponseEntity<List<UserOutputDTO>> searchUsers(
+            @RequestParam String q,
+            @RequestParam String username) {
+        return ResponseEntity.ok(userService.searchUsers(q, username));
+    }
+
     @GetMapping("/{username}")
     public ResponseEntity<UserOutputDTO> getUser(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUser(username));
