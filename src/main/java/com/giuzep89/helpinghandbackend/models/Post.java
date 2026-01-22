@@ -34,7 +34,6 @@ public abstract class Post {
         this.author = author;
         this.description = description;
         this.location = location;
-        this.createdAt = LocalDateTime.now();
     }
 
     // Getters and setters

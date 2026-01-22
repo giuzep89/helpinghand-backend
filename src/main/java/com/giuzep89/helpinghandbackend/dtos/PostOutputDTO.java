@@ -1,9 +1,13 @@
 package com.giuzep89.helpinghandbackend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.giuzep89.helpinghandbackend.models.ActivityType;
 import com.giuzep89.helpinghandbackend.models.HelpType;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class PostOutputDTO {
     private Long id;
     private String displayTitle;  // To hold pre-made titles for either activities or helprequest (user doesn't write titles manually)
@@ -22,7 +26,7 @@ public class PostOutputDTO {
     // Activity fields
     private ActivityType activityType;
     private LocalDateTime eventDate;
-    private int currentParticipants;
+    private Integer currentParticipants;
 
     // Getters and Setters
 
@@ -114,11 +118,11 @@ public class PostOutputDTO {
         this.eventDate = eventDate;
     }
 
-    public int getCurrentParticipants() {
+    public Integer getCurrentParticipants() {
         return currentParticipants;
     }
 
-    public void setCurrentParticipants(int currentParticipants) {
+    public void setCurrentParticipants(Integer currentParticipants) {
         this.currentParticipants = currentParticipants;
     }
 }

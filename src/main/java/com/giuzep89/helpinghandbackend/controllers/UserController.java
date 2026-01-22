@@ -1,9 +1,8 @@
 package com.giuzep89.helpinghandbackend.controllers;
 
-import com.giuzep89.helpinghandbackend.dtos.UserInputDTO;
 import com.giuzep89.helpinghandbackend.dtos.UserOutputDTO;
+import com.giuzep89.helpinghandbackend.dtos.UserUpdateDTO;
 import com.giuzep89.helpinghandbackend.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +29,8 @@ public class UserController {
     @PutMapping("/{username}")
     public ResponseEntity<UserOutputDTO> updateUser(
             @PathVariable String username,
-            @Valid @RequestBody UserInputDTO inputDTO) {
-        return ResponseEntity.ok(userService.updateUser(username, inputDTO));
+            @RequestBody UserUpdateDTO updateDTO) {
+        return ResponseEntity.ok(userService.updateUser(username, updateDTO));
     }
 
     @GetMapping("/{username}/friends")

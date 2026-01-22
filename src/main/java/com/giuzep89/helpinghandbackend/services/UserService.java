@@ -1,7 +1,7 @@
 package com.giuzep89.helpinghandbackend.services;
 
-import com.giuzep89.helpinghandbackend.dtos.UserInputDTO;
 import com.giuzep89.helpinghandbackend.dtos.UserOutputDTO;
+import com.giuzep89.helpinghandbackend.dtos.UserUpdateDTO;
 import com.giuzep89.helpinghandbackend.exceptions.RecordNotFoundException;
 import com.giuzep89.helpinghandbackend.mappers.UserMapper;
 import com.giuzep89.helpinghandbackend.models.User;
@@ -29,19 +29,18 @@ public class UserService {
         return UserMapper.toDTO(user);
     }
 
-    public UserOutputDTO updateUser(String username, UserInputDTO inputDTO) {
+    public UserOutputDTO updateUser(String username, UserUpdateDTO updateDTO) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));
 
-        // Update only non-security fields
-        if (inputDTO.getAge() != 0) {
-            user.setAge(inputDTO.getAge());
+        if (updateDTO.getAge() != null) {
+            user.setAge(updateDTO.getAge());
         }
-        if (inputDTO.getLocation() != null) {
-            user.setLocation(inputDTO.getLocation());
+        if (updateDTO.getLocation() != null) {
+            user.setLocation(updateDTO.getLocation());
         }
-        if (inputDTO.getCompetencies() != null) {
-            user.setCompetencies(inputDTO.getCompetencies());
+        if (updateDTO.getCompetencies() != null) {
+            user.setCompetencies(updateDTO.getCompetencies());
         }
 
         user = userRepository.save(user);

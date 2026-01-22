@@ -7,13 +7,13 @@ public enum ActivityType {
     SOCIAL("social"),
     EDUCATIONAL("educational");
 
-    private final String activityType;
+    private final String displayName;
 
-    ActivityType(String activityType) {
-        this.activityType = activityType;
+    ActivityType(String displayName) {
+        this.displayName = displayName;
     }
 
-    public String getActivityType() {
-        return activityType;
+    public String getDisplayName() {
+        return displayName;
     }
 }

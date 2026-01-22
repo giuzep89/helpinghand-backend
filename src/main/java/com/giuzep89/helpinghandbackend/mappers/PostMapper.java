@@ -8,6 +8,8 @@ import com.giuzep89.helpinghandbackend.models.HelpRequest;
 import com.giuzep89.helpinghandbackend.models.HelpType;
 import com.giuzep89.helpinghandbackend.models.Post;
 
+import java.time.LocalDateTime;
+
 public class PostMapper {
 
     public static HelpRequest toEntity(HelpRequestInputDTO inputDTO) {
@@ -16,6 +18,7 @@ public class PostMapper {
         entity.setHelpType(inputDTO.getHelpType());
         entity.setLocation(inputDTO.getLocation());
         entity.setDescription(inputDTO.getDescription());
+        entity.setCreatedAt(LocalDateTime.now());
 
         return entity;
     }
@@ -26,6 +29,7 @@ public class PostMapper {
         entity.setDescription(inputDTO.getDescription());
         entity.setLocation(inputDTO.getLocation());
         entity.setEventDate(inputDTO.getEventDate());
+        entity.setCreatedAt(LocalDateTime.now());
 
         return entity;
     }
@@ -40,8 +44,8 @@ public class PostMapper {
         dto.setCreatedAt(post.getCreatedAt());
         dto.setAuthorUsername(post.getAuthor().getUsername());
 
-        if (post instanceof HelpRequest) {
-            HelpRequest helpRequest = (HelpRequest) post;
+        // Post object is directly cast to HelpRequest and Activity thanks to pattern variable!
+        if (post instanceof HelpRequest helpRequest) {
 
             dto.setPostType("HELP_REQUEST");
 
@@ -53,14 +57,14 @@ public class PostMapper {
             } else {
                 dto.setDisplayTitle("I need some help with " + helpRequest.getHelpType().getDisplayName() + "!");
             }
-        } else if (post instanceof Activity) {
-            Activity activity = (Activity) post;
+        } else if (post instanceof Activity activity) {
 
             dto.setPostType("ACTIVITY");
 
             dto.setActivityType(activity.getActivityType());
             dto.setEventDate(activity.getEventDate());
-            dto.setDisplayTitle(activity.getActivityType() + " activity: anyone joining?");
+            dto.setCurrentParticipants(activity.getAttendees().size());
+            dto.setDisplayTitle("Going for a " + activity.getActivityType().getDisplayName() + " activity: anyone joining?");
         }
 
         return dto;

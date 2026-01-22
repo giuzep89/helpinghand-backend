@@ -113,21 +113,21 @@ INSERT INTO chats (id, user_one_id, user_two_id) VALUES (2, 1, 3);
 INSERT INTO chats (id, user_one_id, user_two_id) VALUES (3, 4, 5);
 
 -- Messages
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (1, 1, 1, 'Hi Maria, can you help me with my taxes next week?', '2025-01-18 10:00:00');
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (2, 1, 2, 'Sure Jan! I have time on Thursday afternoon.', '2025-01-18 10:15:00');
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (3, 1, 1, 'Perfect, see you then!', '2025-01-18 10:20:00');
 
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (4, 2, 3, 'Jan, thanks for helping with my garden last week!', '2025-01-19 14:00:00');
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (5, 2, 1, 'No problem Piet, happy to help a neighbor!', '2025-01-19 14:30:00');
 
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (6, 3, 4, 'Kees, are you coming to the board game night?', '2025-01-20 09:00:00');
-INSERT INTO messages (id, chat_id, sender_id, content, sent_at)
+INSERT INTO messages (id, chat_id, sender_id, content, timestamp)
 VALUES (7, 3, 5, 'Yes! I will bring Catan!', '2025-01-20 09:30:00');
 
 -- Reset sequences to continue after our manual IDs
