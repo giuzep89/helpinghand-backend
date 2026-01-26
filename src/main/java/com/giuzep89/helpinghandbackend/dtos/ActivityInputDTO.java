@@ -4,11 +4,13 @@ import com.giuzep89.helpinghandbackend.models.ActivityType;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class ActivityInputDTO {
 
     @NotBlank(message = "Description is required")
+    @Size(max = 300, message = "Description must be 300 characters or less")
     private String description;
 
     @NotBlank(message = "Location is required")

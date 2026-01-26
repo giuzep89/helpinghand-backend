@@ -29,6 +29,7 @@ public class UserMapper {
         outputDTO.setLocation(user.getLocation());
         outputDTO.setCompetencies(user.getCompetencies());
         outputDTO.setPrizes(user.getPrizes());
+        outputDTO.setHasProfilePicture(user.getProfilePicture() != null);
 
         return outputDTO;
     }

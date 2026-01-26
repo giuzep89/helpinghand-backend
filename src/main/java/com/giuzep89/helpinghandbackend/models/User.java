@@ -28,6 +28,13 @@ public class User {
     @Column(length = 1000)
     private String competencies; // it's mostly called "things I can do" in the frontend
 
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
+
+    @Column(name = "profile_picture_type")
+    private String profilePictureType; // stores MIME type (image/jpeg, image/png)
+
     @ElementCollection(targetClass = Prize.class)
     @CollectionTable(name = "user_prizes", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -110,6 +117,22 @@ public class User {
 
     public void setCompetencies(String competencies) {
         this.competencies = competencies;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public String getProfilePictureType() {
+        return profilePictureType;
+    }
+
+    public void setProfilePictureType(String profilePictureType) {
+        this.profilePictureType = profilePictureType;
     }
 
     public List<Prize> getPrizes() {

@@ -19,7 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PostService {
@@ -86,6 +88,17 @@ public class PostService {
 
         if (!post.getAuthor().getUsername().equals(username)) {
             throw new UnauthorizedException("Only the author can mark help as found");
+        }
+
+        Set<Long> friendIds = new HashSet<>();
+        for (User friend : post.getAuthor().getFriends()) {
+            friendIds.add(friend.getId());
+        }
+
+        for (Long recipientId : prizeRecipientIds) {
+            if (!friendIds.contains(recipientId)) {
+                throw new IllegalArgumentException("Can only award prizes to friends");
+            }
         }
 
         helpRequest.setHelpFound(true);

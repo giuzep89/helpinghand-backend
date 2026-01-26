@@ -3,8 +3,11 @@ package com.giuzep89.helpinghandbackend.controllers;
 import com.giuzep89.helpinghandbackend.dtos.UserOutputDTO;
 import com.giuzep89.helpinghandbackend.dtos.UserUpdateDTO;
 import com.giuzep89.helpinghandbackend.services.UserService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -57,6 +60,29 @@ public class UserController {
             @PathVariable String username,
             @PathVariable Long friendId) {
         userService.removeFriend(username, friendId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{username}/profile-picture")
+    public ResponseEntity<UserOutputDTO> uploadProfilePicture(
+            @PathVariable String username,
+            @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(userService.uploadProfilePicture(username, file));
+    }
+
+    @GetMapping("/{username}/profile-picture")
+    public ResponseEntity<byte[]> getProfilePicture(@PathVariable String username) {
+        byte[] imageData = userService.getProfilePicture(username);
+        String contentType = userService.getProfilePictureType(username);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, contentType)
+                .body(imageData);
+    }
+
+    @DeleteMapping("/{username}/profile-picture")
+    public ResponseEntity<Void> deleteProfilePicture(@PathVariable String username) {
+        userService.deleteProfilePicture(username);
         return ResponseEntity.noContent().build();
     }
 }

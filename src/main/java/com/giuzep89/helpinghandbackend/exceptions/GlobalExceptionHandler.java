@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,5 +31,27 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(value = InvalidFileException.class)
+    public ResponseEntity<Object> handleInvalidFile(InvalidFileException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(value = MultipartException.class)
+    public ResponseEntity<Object> handleFileUploadException(MultipartException exception) {
+        // File size limit caught in 2 ways: either when reading content-length header before upload
+        // or during streaming
+        boolean isSizeExceeded = exception instanceof MaxUploadSizeExceededException
+                || exception.getCause() instanceof IllegalStateException;
+
+        if (isSizeExceeded) {
+            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+                    .body("File size exceeds maximum allowed size of 5MB");
+        }
+
+        // Other file upload errors (corrupted file, missing part, etc.)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error processing file upload");
     }
 }

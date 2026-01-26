@@ -12,6 +12,7 @@ public class UserOutputDTO {
     private String location;
     private String competencies;
     private List<Prize> prizes;
+    private boolean hasProfilePicture;
 
     // Getters and Setters
     public Long getId() {
@@ -68,5 +69,13 @@ public class UserOutputDTO {
 
     public void setPrizes(List<Prize> prizes) {
         this.prizes = prizes;
+    }
+
+    public boolean isHasProfilePicture() {
+        return hasProfilePicture;
+    }
+
+    public void setHasProfilePicture(boolean hasProfilePicture) {
+        this.hasProfilePicture = hasProfilePicture;
     }
 }
