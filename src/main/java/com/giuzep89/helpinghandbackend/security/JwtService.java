@@ -26,7 +26,7 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(), Jwts.SIG.HS256)
+                .signWith(getSigningKey(), Jwts.SIG.HS256) // Explicit declaration of the encryption algorithm is not needed in jjwt 0.13 and is inferred from the key itself, but I prefer it for clarity's sake
                 .compact();
     }
 
