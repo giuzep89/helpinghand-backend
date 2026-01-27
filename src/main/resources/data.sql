@@ -3,21 +3,21 @@ INSERT INTO authorities (authority) VALUES ('ROLE_USER');
 INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN');
 
 -- Users (passwords are BCrypt encoded - plain text was "password123")
--- BCrypt hash: $2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG
+-- BCrypt hash: $2a$12$SOP2Me9pQyLwaRp9406htOsP/2tk37shKTPQSeWLbKQBqR35/0bAS
 INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
-VALUES (1, 'jan@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'jan_de_bakker', 45, 'Amsterdam', 'Gardening, plumbing, general repairs', true);
+VALUES (1, 'jan@example.com', '$2a$12$SOP2Me9pQyLwaRp9406htOsP/2tk37shKTPQSeWLbKQBqR35/0bAS', 'jan_de_bakker', 45, 'Amsterdam', 'Gardening, plumbing, general repairs', true);
 
 INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
-VALUES (2, 'maria@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'maria_visser', 32, 'Rotterdam', 'IT support, tax advice, languages', true);
+VALUES (2, 'maria@example.com', '$2a$12$SOP2Me9pQyLwaRp9406htOsP/2tk37shKTPQSeWLbKQBqR35/0bAS', 'maria_visser', 32, 'Rotterdam', 'IT support, tax advice, languages', true);
 
 INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
-VALUES (3, 'piet@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'piet_jansen', 67, 'Utrecht', 'Company, transport, groceries', true);
+VALUES (3, 'piet@example.com', '$2a$12$SOP2Me9pQyLwaRp9406htOsP/2tk37shKTPQSeWLbKQBqR35/0bAS', 'piet_jansen', 67, 'Utrecht', 'Company, transport, groceries', true);
 
 INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
-VALUES (4, 'anna@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'anna_smit', 28, 'Amsterdam', 'Pet sitting, painting, house chores', true);
+VALUES (4, 'anna@example.com', '$2a$12$SOP2Me9pQyLwaRp9406htOsP/2tk37shKTPQSeWLbKQBqR35/0bAS', 'anna_smit', 28, 'Amsterdam', 'Pet sitting, painting, house chores', true);
 
 INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
-VALUES (5, 'kees@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'kees_de_vries', 55, 'Den Haag', 'Bureaucracy, moving, repairs', true);
+VALUES (5, 'kees@example.com', '$2a$12$SOP2Me9pQyLwaRp9406htOsP/2tk37shKTPQSeWLbKQBqR35/0bAS', 'kees_de_vries', 55, 'Den Haag', 'Bureaucracy, moving, repairs', true);
 
 -- User authorities (all users get ROLE_USER, jan_de_bakker also gets ROLE_ADMIN)
 INSERT INTO user_authorities (user_id, authority) VALUES (1, 'ROLE_USER');

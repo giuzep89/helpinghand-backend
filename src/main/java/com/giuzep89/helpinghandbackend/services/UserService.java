@@ -91,11 +91,12 @@ public class UserService {
     }
 
     // File upload functionalities - Profile picture
-
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of("image/jpeg", "image/png");
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
+    // Transactional is here to avoid confusing errors that might occur during the handling of the upload/download
+    // of the file. Adds extra integrity to the process
     @Transactional
     public UserOutputDTO uploadProfilePicture(String username, MultipartFile file) {
         if (file.isEmpty()) {
