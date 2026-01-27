@@ -4,8 +4,10 @@ import com.giuzep89.helpinghandbackend.dtos.UserOutputDTO;
 import com.giuzep89.helpinghandbackend.dtos.UserUpdateDTO;
 import com.giuzep89.helpinghandbackend.exceptions.UnauthorizedException;
 import com.giuzep89.helpinghandbackend.services.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -102,6 +104,21 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails) {
         verifyUserAccess(username, userDetails);
         userService.deleteProfilePicture(username);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/admin/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<UserOutputDTO>> getAllUsersAsAdmin(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(userService.getAllUsers(page, size));
+    }
+
+    @DeleteMapping("/admin/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteUserAsAdmin(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -29,6 +29,14 @@ public class Activity extends Post {
         this.eventDate = eventDate;
     }
 
+    // This method will ensure that the attendees are removed after deletion of an activity
+    @PreRemove
+    private void removeActivityFromUsers() {
+        for (User user : attendees) {
+            user.getAttendedActivities().remove(this);
+        }
+    }
+
     // Getters and Setters
     public ActivityType getActivityType() { return activityType; }
     public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
@@ -38,4 +46,6 @@ public class Activity extends Post {
 
     public List<User> getAttendees() { return attendees; }
     public void setAttendees(List<User> attendees) { this.attendees = attendees; }
+
+
 }

@@ -139,5 +139,9 @@ public class PostService {
         return PostMapper.toDTO(savedPost);
     }
 
-
+    public void deletePostAsAdmin(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Post not found"));
+        postRepository.delete(post);
+    }
 }

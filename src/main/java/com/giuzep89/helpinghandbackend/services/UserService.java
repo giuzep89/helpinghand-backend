@@ -5,8 +5,14 @@ import com.giuzep89.helpinghandbackend.dtos.UserUpdateDTO;
 import com.giuzep89.helpinghandbackend.exceptions.InvalidFileException;
 import com.giuzep89.helpinghandbackend.exceptions.RecordNotFoundException;
 import com.giuzep89.helpinghandbackend.mappers.UserMapper;
+import com.giuzep89.helpinghandbackend.models.Chat;
+import com.giuzep89.helpinghandbackend.models.Post;
 import com.giuzep89.helpinghandbackend.models.User;
+import com.giuzep89.helpinghandbackend.repositories.ChatRepository;
+import com.giuzep89.helpinghandbackend.repositories.PostRepository;
 import com.giuzep89.helpinghandbackend.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,9 +25,13 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
+    private final PostRepository postRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ChatRepository chatRepository, PostRepository postRepository) {
         this.userRepository = userRepository;
+        this.chatRepository = chatRepository;
+        this.postRepository = postRepository;
     }
 
     public List<UserOutputDTO> searchUsers(String query, String currentUsername) {
@@ -153,5 +163,42 @@ public class UserService {
         user.setProfilePicture(null);
         user.setProfilePictureType(null);
         userRepository.save(user);
+    }
+
+    public Page<UserOutputDTO> getAllUsers(int page, int size) {
+        Page<User> users = userRepository.findAll(PageRequest.of(page, size));
+        return users.map(UserMapper::toDTO);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("User not found"));
+
+        // 1. Delete all chats where user is involved (messages cascade automatically)
+        List<Chat> userChats = chatRepository.findByUserOneOrUserTwo(user, user);
+        chatRepository.deleteAll(userChats);
+
+        // 2. Delete all posts authored by the user
+        List<Post> userPosts = postRepository.findAllByAuthorId(id);
+        postRepository.deleteAll(userPosts);
+
+        // 3. Remove user from other users' friend lists
+        List<User> allUsers = userRepository.findAll();
+        for (User otherUser : allUsers) {
+            if (otherUser.getFriends().remove(user)) {
+                userRepository.save(otherUser);
+            }
+        }
+
+        // 4. Clear user's own collections to avoid constraint issues
+        user.getFriends().clear();
+        user.getAttendedActivities().clear();
+        user.getPrizes().clear();
+        user.getAuthorities().clear();
+        userRepository.save(user);
+
+        // 5. Delete the user
+        userRepository.delete(user);
     }
 }
