@@ -3,7 +3,9 @@ package com.giuzep89.helpinghandbackend.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -62,7 +64,16 @@ public class User {
     )
     private List<Activity> attendedActivities = new ArrayList<>();
 
-// TODO Add list of Authorities + authority methods
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority")
+    )
+    private Set<Authority> authorities = new HashSet<>();
+
+    @Column(nullable = false)
+    private boolean enabled = true;
 
 
 
@@ -173,5 +184,21 @@ public class User {
 
     public void setAttendedActivities(List<Activity> attendedActivities) {
         this.attendedActivities = attendedActivities;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

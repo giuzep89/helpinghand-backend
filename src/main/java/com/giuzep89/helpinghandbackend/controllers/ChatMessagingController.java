@@ -7,6 +7,8 @@ import com.giuzep89.helpinghandbackend.services.ChatService;
 import com.giuzep89.helpinghandbackend.services.MessageService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,15 +29,15 @@ public class ChatMessagingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ChatOutputDTO>> getUserChats(@RequestParam String username) {
-        return ResponseEntity.ok(chatService.getUserChats(username));
+    public ResponseEntity<List<ChatOutputDTO>> getUserChats(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(chatService.getUserChats(userDetails.getUsername()));
     }
 
     @PostMapping
     public ResponseEntity<ChatOutputDTO> createChat(
             @RequestBody Long recipientId,
-            @RequestParam String username) {
-        ChatOutputDTO created = chatService.createChat(recipientId, username);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ChatOutputDTO created = chatService.createChat(recipientId, userDetails.getUsername());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -47,24 +49,24 @@ public class ChatMessagingController {
     @GetMapping("/{id}")
     public ResponseEntity<ChatOutputDTO> getChat(
             @PathVariable Long id,
-            @RequestParam String username) {
-        return ResponseEntity.ok(chatService.getChat(id, username));
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(chatService.getChat(id, userDetails.getUsername()));
     }
 
     @GetMapping("/{chatId}/messages")
     public ResponseEntity<List<MessageOutputDTO>> getMessagesForChat(
             @PathVariable Long chatId,
-            @RequestParam String username) {
-        return ResponseEntity.ok(messageService.getMessagesForChat(chatId, username));
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(messageService.getMessagesForChat(chatId, userDetails.getUsername()));
     }
 
     @PostMapping("/{chatId}/messages")
     public ResponseEntity<MessageOutputDTO> sendMessage(
             @PathVariable Long chatId,
             @Valid @RequestBody MessageInputDTO messageInputDTO,
-            @RequestParam String username) {
+            @AuthenticationPrincipal UserDetails userDetails) {
         messageInputDTO.setChatId(chatId);
-        MessageOutputDTO created = messageService.sendMessage(messageInputDTO, username);
+        MessageOutputDTO created = messageService.sendMessage(messageInputDTO, userDetails.getUsername());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
