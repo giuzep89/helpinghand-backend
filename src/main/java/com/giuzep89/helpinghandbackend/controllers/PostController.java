@@ -7,6 +7,8 @@ import com.giuzep89.helpinghandbackend.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,17 +28,17 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<Page<PostOutputDTO>> getAllPosts(
-            @RequestParam String username,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        return ResponseEntity.ok(postService.getAllPosts(username, page, size));
+        return ResponseEntity.ok(postService.getAllPosts(userDetails.getUsername(), page, size));
     }
 
     @PostMapping("/help-requests")
     public ResponseEntity<PostOutputDTO> createHelpRequest(
             @Valid @RequestBody HelpRequestInputDTO helpRequestInputDTO,
-            @RequestParam String username) {
-        PostOutputDTO created = postService.createHelpRequest(helpRequestInputDTO, username);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        PostOutputDTO created = postService.createHelpRequest(helpRequestInputDTO, userDetails.getUsername());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -48,8 +50,8 @@ public class PostController {
     @PostMapping("/activities")
     public ResponseEntity<PostOutputDTO> createActivity(
             @Valid @RequestBody ActivityInputDTO activityInputDTO,
-            @RequestParam String username) {
-        PostOutputDTO created = postService.createActivity(activityInputDTO, username);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        PostOutputDTO created = postService.createActivity(activityInputDTO, userDetails.getUsername());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -59,8 +61,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id, @RequestParam String username) {
-        postService.deletePost(id, username);
+    public ResponseEntity<Void> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        postService.deletePost(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 
@@ -68,14 +70,14 @@ public class PostController {
     public ResponseEntity<PostOutputDTO> markHelpFound(
             @PathVariable Long id,
             @RequestBody List<Long> prizeRecipientIds,
-            @RequestParam String username) {
-        return ResponseEntity.ok(postService.markHelpFound(id, prizeRecipientIds, username));
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(postService.markHelpFound(id, prizeRecipientIds, userDetails.getUsername()));
     }
 
     @PostMapping("/activities/{id}/join")
     public ResponseEntity<PostOutputDTO> joinActivity(
             @PathVariable Long id,
-            @RequestParam String username) {
-        return ResponseEntity.ok(postService.joinActivity(id, username));
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(postService.joinActivity(id, userDetails.getUsername()));
     }
 }

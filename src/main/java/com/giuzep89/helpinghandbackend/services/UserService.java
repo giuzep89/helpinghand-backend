@@ -24,10 +24,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // TODO Add registerUser method with password encoding (Spring Security)
-    // TODO Implement UserDetailsService.loadUserByUsername for authentication
-    // TODO Add authority/role management methods
-
     public List<UserOutputDTO> searchUsers(String query, String currentUsername) {
         return userRepository.findByUsernameContainingIgnoreCase(query).stream()
                 .filter(user -> !user.getUsername().equals(currentUsername))

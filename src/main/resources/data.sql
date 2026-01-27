@@ -1,18 +1,31 @@
--- Users (passwords are plain text for now - will need encoding after Spring Security is added)
-INSERT INTO users (id, email, password, username, age, location, competencies)
-VALUES (1, 'jan@example.com', 'password123', 'jan_de_bakker', 45, 'Amsterdam', 'Gardening, plumbing, general repairs');
+-- Authorities
+INSERT INTO authorities (authority) VALUES ('ROLE_USER');
+INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN');
 
-INSERT INTO users (id, email, password, username, age, location, competencies)
-VALUES (2, 'maria@example.com', 'password123', 'maria_visser', 32, 'Rotterdam', 'IT support, tax advice, languages');
+-- Users (passwords are BCrypt encoded - plain text was "password123")
+-- BCrypt hash: $2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG
+INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
+VALUES (1, 'jan@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'jan_de_bakker', 45, 'Amsterdam', 'Gardening, plumbing, general repairs', true);
 
-INSERT INTO users (id, email, password, username, age, location, competencies)
-VALUES (3, 'piet@example.com', 'password123', 'piet_jansen', 67, 'Utrecht', 'Company, transport, groceries');
+INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
+VALUES (2, 'maria@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'maria_visser', 32, 'Rotterdam', 'IT support, tax advice, languages', true);
 
-INSERT INTO users (id, email, password, username, age, location, competencies)
-VALUES (4, 'anna@example.com', 'password123', 'anna_smit', 28, 'Amsterdam', 'Pet sitting, painting, house chores');
+INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
+VALUES (3, 'piet@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'piet_jansen', 67, 'Utrecht', 'Company, transport, groceries', true);
 
-INSERT INTO users (id, email, password, username, age, location, competencies)
-VALUES (5, 'kees@example.com', 'password123', 'kees_de_vries', 55, 'Den Haag', 'Bureaucracy, moving, repairs');
+INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
+VALUES (4, 'anna@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'anna_smit', 28, 'Amsterdam', 'Pet sitting, painting, house chores', true);
+
+INSERT INTO users (id, email, password, username, age, location, competencies, enabled)
+VALUES (5, 'kees@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'kees_de_vries', 55, 'Den Haag', 'Bureaucracy, moving, repairs', true);
+
+-- User authorities (all users get ROLE_USER, jan_de_bakker also gets ROLE_ADMIN)
+INSERT INTO user_authorities (user_id, authority) VALUES (1, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO user_authorities (user_id, authority) VALUES (2, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority) VALUES (3, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority) VALUES (4, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority) VALUES (5, 'ROLE_USER');
 
 -- Friendships (user_friends join table)
 INSERT INTO user_friends (user_id, friend_id) VALUES (1, 2);
