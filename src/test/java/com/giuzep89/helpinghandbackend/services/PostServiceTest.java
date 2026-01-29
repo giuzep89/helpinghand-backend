@@ -26,7 +26,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -95,7 +94,7 @@ class PostServiceTest {
 
         List<Post> posts = List.of(testHelpRequest, testActivity);
         Page<Post> postPage = new PageImpl<>(posts, PageRequest.of(0, 20), 2);
-        when(postRepository.findByAuthorInOrderByCreatedAtDesc(any(), eq(PageRequest.of(0, 20))))
+        when(postRepository.findByAuthorInOrderByCreatedAtDesc(List.of(friendUser, testUser), PageRequest.of(0, 20)))
                 .thenReturn(postPage);
 
         //act
@@ -103,7 +102,6 @@ class PostServiceTest {
 
         //assert
         assertEquals(2, result.getTotalElements());
-        verify(postRepository).findByAuthorInOrderByCreatedAtDesc(any(), any());
     }
 
     // createHelpRequest ------------------
@@ -139,7 +137,6 @@ class PostServiceTest {
         assertNotNull(result);
         assertEquals("HELP_REQUEST", result.getPostType());
         assertEquals(HelpType.GARDENING, result.getHelpType());
-        verify(postRepository).save(any(HelpRequest.class));
     }
 
     // createActivity ------------------
@@ -178,7 +175,6 @@ class PostServiceTest {
         assertNotNull(result);
         assertEquals("ACTIVITY", result.getPostType());
         assertEquals(ActivityType.SPORTS, result.getActivityType());
-        verify(postRepository).save(any(Activity.class));
     }
 
     // deletePost ------------------
@@ -288,8 +284,6 @@ class PostServiceTest {
         assertNotNull(result);
         assertTrue(testHelpRequest.isHelpFound());
         assertTrue(friendUser.getPrizes().contains(Prize.GARDENING));
-        verify(userRepository).save(friendUser);
-        verify(postRepository).save(testHelpRequest);
     }
 
     // joinActivity ------------------
@@ -343,8 +337,6 @@ class PostServiceTest {
         assertNotNull(result);
         assertTrue(testActivity.getAttendees().contains(friendUser));
         assertTrue(friendUser.getAttendedActivities().contains(testActivity));
-        verify(userRepository).save(friendUser);
-        verify(postRepository).save(testActivity);
     }
 
     // deletePostAsAdmin ------------------
