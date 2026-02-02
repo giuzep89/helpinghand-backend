@@ -4,6 +4,7 @@ import com.giuzep89.helpinghandbackend.dtos.UserOutputDTO;
 import com.giuzep89.helpinghandbackend.dtos.UserUpdateDTO;
 import com.giuzep89.helpinghandbackend.exceptions.UnauthorizedException;
 import com.giuzep89.helpinghandbackend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class UserController {
     @PutMapping("/{username}")
     public ResponseEntity<UserOutputDTO> updateUser(
             @PathVariable String username,
-            @RequestBody UserUpdateDTO updateDTO,
+            @Valid @RequestBody UserUpdateDTO updateDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
         verifyUserAccess(username, userDetails);
         return ResponseEntity.ok(userService.updateUser(username, updateDTO));

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -78,6 +79,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Transactional
     public PostOutputDTO markHelpFound(Long postId, List<Long> prizeRecipientIds, String username) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RecordNotFoundException("Post not found"));
