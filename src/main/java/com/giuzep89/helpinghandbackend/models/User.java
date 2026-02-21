@@ -30,8 +30,11 @@ public class User {
     @Column(length = 1000)
     private String competencies; // it's mostly called "things I can do" in the frontend
 
-    @Lob
-    @Column(name = "profile_picture")
+    // Using "bytea" instead of @Lob because PostgreSQL Large Objects require an active transaction
+    // to be read. Since the JwtRequestFilter loads the User outside of a transaction context,
+    // @Lob would cause "Large Objects may not be used in auto-commit mode" errors.
+    // "bytea" stores the binary data inline in the row, avoiding this issue.
+    @Column(name = "profile_picture", columnDefinition = "bytea")
     private byte[] profilePicture;
 
     @Column(name = "profile_picture_type")

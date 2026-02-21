@@ -1,5 +1,7 @@
 package com.giuzep89.helpinghandbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Prize {
     GARDENING("Thumbs Are Green All Over"),
     TAXES("Knows How To Fudge The Numbers"),
@@ -22,6 +24,7 @@ public enum Prize {
         this.prizeDescription = prizeDescription;
     }
 
+    @JsonValue
     public String getPrizeDescription() {
         return prizeDescription;
     }

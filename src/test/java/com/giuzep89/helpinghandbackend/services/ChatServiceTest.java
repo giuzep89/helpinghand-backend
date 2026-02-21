@@ -71,26 +71,21 @@ class ChatServiceTest {
 
     @Test
     public void shouldThrowRecordNotFound_WhenCreateChatRecipientNotFound() {
-        //arrange
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        //act & assert
         assertThrows(RecordNotFoundException.class,
                 () -> chatService.createChat(99L, "testuser"));
     }
 
     @Test
     public void shouldReturnExistingChat_WhenChatAlreadyExistsAsUserOne() {
-        //arrange
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(2L)).thenReturn(Optional.of(otherUser));
         when(chatRepository.findByUserOneAndUserTwo(testUser, otherUser)).thenReturn(Optional.of(testChat));
 
-        //act
         ChatOutputDTO result = chatService.createChat(2L, "testuser");
 
-        //assert
         assertNotNull(result);
         assertEquals(10L, result.getId());
         assertEquals("otheruser", result.getOtherUserUsername());
@@ -99,16 +94,13 @@ class ChatServiceTest {
 
     @Test
     public void shouldReturnExistingChat_WhenChatAlreadyExistsAsUserTwo() {
-        //arrange
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(2L)).thenReturn(Optional.of(otherUser));
         when(chatRepository.findByUserOneAndUserTwo(testUser, otherUser)).thenReturn(Optional.empty());
         when(chatRepository.findByUserOneAndUserTwo(otherUser, testUser)).thenReturn(Optional.of(testChat));
 
-        //act
         ChatOutputDTO result = chatService.createChat(2L, "testuser");
 
-        //assert
         assertNotNull(result);
         assertEquals(10L, result.getId());
         verify(chatRepository, never()).save(any());
@@ -116,17 +108,14 @@ class ChatServiceTest {
 
     @Test
     public void shouldSaveAndReturnDto_WhenCreateNewChat() {
-        //arrange
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(2L)).thenReturn(Optional.of(otherUser));
         when(chatRepository.findByUserOneAndUserTwo(testUser, otherUser)).thenReturn(Optional.empty());
         when(chatRepository.findByUserOneAndUserTwo(otherUser, testUser)).thenReturn(Optional.empty());
         when(chatRepository.save(any(Chat.class))).thenReturn(testChat);
 
-        //act
         ChatOutputDTO result = chatService.createChat(2L, "testuser");
 
-        //assert
         assertNotNull(result);
         assertEquals(10L, result.getId());
         assertEquals("otheruser", result.getOtherUserUsername());
@@ -136,31 +125,25 @@ class ChatServiceTest {
 
     @Test
     public void shouldThrowRecordNotFound_WhenGetUserChatsUserNotFound() {
-        //arrange
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
-        //act & assert
         assertThrows(RecordNotFoundException.class,
                 () -> chatService.getUserChats("unknown"));
     }
 
     @Test
     public void shouldReturnEmptyList_WhenUserHasNoChats() {
-        //arrange
         testUser.setInitiatedChats(new ArrayList<>());
         testUser.setReceivedChats(new ArrayList<>());
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
 
-        //act
         List<ChatOutputDTO> result = chatService.getUserChats("testuser");
 
-        //assert
         assertTrue(result.isEmpty());
     }
 
     @Test
     public void shouldReturnAllChats_WhenUserHasInitiatedAndReceivedChats() {
-        //arrange
         Chat receivedChat = new Chat(otherUser, testUser);
         ReflectionTestUtils.setField(receivedChat, "id", 20L);
 
@@ -168,10 +151,8 @@ class ChatServiceTest {
         testUser.setReceivedChats(new ArrayList<>(List.of(receivedChat)));
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
 
-        //act
         List<ChatOutputDTO> result = chatService.getUserChats("testuser");
 
-        //assert
         assertEquals(2, result.size());
     }
 
@@ -179,28 +160,23 @@ class ChatServiceTest {
 
     @Test
     public void shouldThrowRecordNotFound_WhenGetChatUserNotFound() {
-        //arrange
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
-        //act & assert
         assertThrows(RecordNotFoundException.class,
                 () -> chatService.getChat(10L, "unknown"));
     }
 
     @Test
     public void shouldThrowRecordNotFound_WhenGetChatNotFound() {
-        //arrange
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(chatRepository.findById(99L)).thenReturn(Optional.empty());
 
-        //act & assert
         assertThrows(RecordNotFoundException.class,
                 () -> chatService.getChat(99L, "testuser"));
     }
 
     @Test
     public void shouldThrowUnauthorized_WhenGetChatUserNotParticipant() {
-        //arrange
         User thirdUser = new User();
         thirdUser.setUsername("thirduser");
         ReflectionTestUtils.setField(thirdUser, "id", 99L);
@@ -208,21 +184,17 @@ class ChatServiceTest {
         when(userRepository.findByUsername("thirduser")).thenReturn(Optional.of(thirdUser));
         when(chatRepository.findById(10L)).thenReturn(Optional.of(testChat));
 
-        //act & assert
         assertThrows(UnauthorizedException.class,
                 () -> chatService.getChat(10L, "thirduser"));
     }
 
     @Test
     public void shouldReturnChat_WhenUserIsUserOne() {
-        //arrange
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(chatRepository.findById(10L)).thenReturn(Optional.of(testChat));
 
-        //act
         ChatOutputDTO result = chatService.getChat(10L, "testuser");
 
-        //assert
         assertNotNull(result);
         assertEquals(10L, result.getId());
         assertEquals("otheruser", result.getOtherUserUsername());
@@ -230,14 +202,11 @@ class ChatServiceTest {
 
     @Test
     public void shouldReturnChat_WhenUserIsUserTwo() {
-        //arrange
         when(userRepository.findByUsername("otheruser")).thenReturn(Optional.of(otherUser));
         when(chatRepository.findById(10L)).thenReturn(Optional.of(testChat));
 
-        //act
         ChatOutputDTO result = chatService.getChat(10L, "otheruser");
 
-        //assert
         assertNotNull(result);
         assertEquals(10L, result.getId());
         assertEquals("testuser", result.getOtherUserUsername());

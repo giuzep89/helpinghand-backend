@@ -84,6 +84,9 @@ public class AuthController {
         user.setUsername(registerInputDTO.getUsername());
         user.setPassword(passwordEncoder.encode(registerInputDTO.getPassword()));
         user.setEnabled(true);
+        user.setAge(registerInputDTO.getAge());
+        user.setLocation(registerInputDTO.getLocation());
+        user.setCompetencies(registerInputDTO.getCompetencies());
 
         Authority userRole = authorityRepository.findById("ROLE_USER")
                 .orElseGet(() -> authorityRepository.save(new Authority("ROLE_USER")));
