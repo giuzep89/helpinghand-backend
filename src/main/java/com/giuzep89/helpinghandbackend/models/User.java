@@ -78,7 +78,8 @@ public class User {
     @Column(nullable = false)
     private boolean enabled = true;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private EmailVerification emailVerification;
 
     // Getters and setters
     public Long getId() {
@@ -203,5 +204,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public EmailVerification getEmailVerification() {
+        return emailVerification;
+    }
+
+    public void setEmailVerification(EmailVerification emailVerification) {
+        this.emailVerification = emailVerification;
     }
 }
