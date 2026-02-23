@@ -16,11 +16,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    private static final long EXPIRATION_MS = 60 * 60 * 1000; // 1 hour
+
     @Value("${jwt.secret}")
     private String secret;
-
-    @Value("${jwt.expiration}")
-    private long expiration;
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
@@ -29,7 +28,7 @@ public class JwtService {
                         .map(GrantedAuthority::getAuthority)
                         .toList())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
                 .signWith(getSigningKey(), Jwts.SIG.HS256) // Explicit declaration of the encryption algorithm is not needed in jjwt 0.13 and is inferred from the key itself, but I prefer it for clarity's sake
                 .compact();
     }
