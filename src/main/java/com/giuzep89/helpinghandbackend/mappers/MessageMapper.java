@@ -1,6 +1,5 @@
 package com.giuzep89.helpinghandbackend.mappers;
 
-import com.giuzep89.helpinghandbackend.dtos.MessageInputDTO;
 import com.giuzep89.helpinghandbackend.dtos.MessageOutputDTO;
 import com.giuzep89.helpinghandbackend.models.Message;
 
@@ -17,10 +16,6 @@ public class MessageMapper {
         return dto;
     }
 
-    public static Message toEntity(MessageInputDTO dto) {
-        Message message = new Message();
-        message.setContent(dto.getContent());
-        // Note: chat and sender are set in the Service after lookup
-        return message;
-    }
+    // No toEntity() method: Message is constructed directly in MessageService
+    // because it requires looked-up Chat and User (sender) entities
 }

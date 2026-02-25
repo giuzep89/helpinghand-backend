@@ -1,7 +1,7 @@
 package com.giuzep89.helpinghandbackend.controllers;
 
 import com.giuzep89.helpinghandbackend.dtos.AuthInputDTO;
-import com.giuzep89.helpinghandbackend.dtos.RegisterInputDTO;
+import com.giuzep89.helpinghandbackend.dtos.UserInputDTO;
 import com.giuzep89.helpinghandbackend.dtos.UserOutputDTO;
 import com.giuzep89.helpinghandbackend.mappers.UserMapper;
 import com.giuzep89.helpinghandbackend.models.Authority;
@@ -74,19 +74,19 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterInputDTO registerInputDTO) {
-        if (userRepository.findByUsername(registerInputDTO.getUsername()).isPresent()) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserInputDTO userInputDTO) {
+        if (userRepository.findByUsername(userInputDTO.getUsername()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
 
         User user = new User();
-        user.setEmail(registerInputDTO.getEmail());
-        user.setUsername(registerInputDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(registerInputDTO.getPassword()));
+        user.setEmail(userInputDTO.getEmail());
+        user.setUsername(userInputDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userInputDTO.getPassword()));
         user.setEnabled(true);
-        user.setAge(registerInputDTO.getAge());
-        user.setLocation(registerInputDTO.getLocation());
-        user.setCompetencies(registerInputDTO.getCompetencies());
+        user.setAge(userInputDTO.getAge());
+        user.setLocation(userInputDTO.getLocation());
+        user.setCompetencies(userInputDTO.getCompetencies());
 
         Authority userRole = authorityRepository.findById("ROLE_USER")
                 .orElseGet(() -> authorityRepository.save(new Authority("ROLE_USER")));

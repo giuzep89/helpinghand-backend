@@ -34,9 +34,6 @@ public class ChatMapper {
         return dto;
     }
 
-    public static Chat toEntity() {
-        // Adding a toEntity here just for convention, but it'll otherwise
-        // be filled straight in the Service
-        return new Chat();
-    }
+    // No toEntity() method: Chat is constructed directly in ChatService
+    // because it requires looked-up User entities (currentUser, recipient)
 }
