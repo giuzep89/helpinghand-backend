@@ -105,9 +105,6 @@ public class UserService {
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-    // Transactional is here to avoid confusing errors that might occur during the handling of the upload/download
-    // of the file. Adds extra integrity to the process
-    @Transactional
     public UserOutputDTO uploadProfilePicture(String username, MultipartFile file) {
         if (file.isEmpty()) {
             throw new InvalidFileException("File is empty");
@@ -135,7 +132,6 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
     public byte[] getProfilePicture(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));
@@ -147,7 +143,6 @@ public class UserService {
         return user.getProfilePicture();
     }
 
-    @Transactional(readOnly = true)
     public String getProfilePictureType(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));
@@ -155,7 +150,6 @@ public class UserService {
         return user.getProfilePictureType();
     }
 
-    @Transactional
     public void deleteProfilePicture(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));

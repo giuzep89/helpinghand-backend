@@ -46,7 +46,7 @@ class PostServiceTest {
     private Activity testActivity;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testUser = new User();
         testUser.setUsername("testuser");
         testUser.setEmail("test@test.com");
@@ -77,17 +77,15 @@ class PostServiceTest {
     // getAllPosts ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenGetAllPostsUserNotFound() {
-        //arrange
+    void shouldThrowRecordNotFound_WhenGetAllPostsUserNotFound() {
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
-        //act & assert
         assertThrows(RecordNotFoundException.class,
                 () -> postService.getAllPosts("unknown", 0, 20));
     }
 
     @Test
-    public void shouldReturnPagedPosts_WhenGetAllPosts() {
+    void shouldReturnPagedPosts_WhenGetAllPosts() {
         testUser.setFriends(new ArrayList<>(List.of(friendUser)));
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
 
@@ -104,7 +102,7 @@ class PostServiceTest {
     // createHelpRequest ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenCreateHelpRequestUserNotFound() {
+    void shouldThrowRecordNotFound_WhenCreateHelpRequestUserNotFound() {
         HelpRequestInputDTO inputDTO = new HelpRequestInputDTO();
         inputDTO.setDescription("Need help");
         inputDTO.setHelpType(HelpType.GARDENING);
@@ -115,7 +113,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldSaveAndReturnDto_WhenCreateHelpRequest() {
+    void shouldSaveAndReturnDto_WhenCreateHelpRequest() {
         HelpRequestInputDTO inputDTO = new HelpRequestInputDTO();
         inputDTO.setDescription("Need help with gardening");
         inputDTO.setLocation("Amsterdam");
@@ -134,7 +132,7 @@ class PostServiceTest {
     // createActivity ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenCreateActivityUserNotFound() {
+    void shouldThrowRecordNotFound_WhenCreateActivityUserNotFound() {
         ActivityInputDTO inputDTO = new ActivityInputDTO();
         inputDTO.setDescription("Sports event");
         inputDTO.setActivityType(ActivityType.SPORTS);
@@ -147,7 +145,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldSaveAndReturnDto_WhenCreateActivity() {
+    void shouldSaveAndReturnDto_WhenCreateActivity() {
         ActivityInputDTO inputDTO = new ActivityInputDTO();
         inputDTO.setDescription("Sports event");
         inputDTO.setLocation("Park");
@@ -167,7 +165,7 @@ class PostServiceTest {
     // deletePost ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenDeletePostNotFound() {
+    void shouldThrowRecordNotFound_WhenDeletePostNotFound() {
         when(postRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class,
@@ -175,7 +173,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowUnauthorized_WhenDeletePostByNonAuthor() {
+    void shouldThrowUnauthorized_WhenDeletePostByNonAuthor() {
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
 
         assertThrows(UnauthorizedException.class,
@@ -183,7 +181,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldDeletePost_WhenAuthor() {
+    void shouldDeletePost_WhenAuthor() {
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
 
         postService.deletePost(1L, "testuser");
@@ -194,7 +192,7 @@ class PostServiceTest {
     // markHelpFound ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenMarkHelpFoundPostNotFound() {
+    void shouldThrowRecordNotFound_WhenMarkHelpFoundPostNotFound() {
         when(postRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class,
@@ -202,7 +200,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgument_WhenMarkHelpFoundOnActivity() {
+    void shouldThrowIllegalArgument_WhenMarkHelpFoundOnActivity() {
         when(postRepository.findById(2L)).thenReturn(Optional.of(testActivity));
 
         assertThrows(IllegalArgumentException.class,
@@ -210,7 +208,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowUnauthorized_WhenMarkHelpFoundByNonAuthor() {
+    void shouldThrowUnauthorized_WhenMarkHelpFoundByNonAuthor() {
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
 
         assertThrows(UnauthorizedException.class,
@@ -218,7 +216,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgument_WhenRecipientNotFriend() {
+    void shouldThrowIllegalArgument_WhenRecipientNotFriend() {
         testUser.setFriends(new ArrayList<>());
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
 
@@ -227,7 +225,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowRecordNotFound_WhenRecipientNotFound() {
+    void shouldThrowRecordNotFound_WhenRecipientNotFound() {
         testUser.setFriends(new ArrayList<>(List.of(friendUser)));
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
         when(userRepository.findById(10L)).thenReturn(Optional.empty());
@@ -237,7 +235,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldAwardPrizesAndMarkFound_WhenMarkHelpFound() {
+    void shouldAwardPrizesAndMarkFound_WhenMarkHelpFound() {
         testUser.setFriends(new ArrayList<>(List.of(friendUser)));
         friendUser.setPrizes(new ArrayList<>());
 
@@ -256,7 +254,7 @@ class PostServiceTest {
     // joinActivity ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenJoinActivityPostNotFound() {
+    void shouldThrowRecordNotFound_WhenJoinActivityPostNotFound() {
         when(postRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class,
@@ -264,7 +262,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgument_WhenJoinNonActivity() {
+    void shouldThrowIllegalArgument_WhenJoinNonActivity() {
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
 
         assertThrows(IllegalArgumentException.class,
@@ -272,7 +270,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldThrowRecordNotFound_WhenJoinActivityUserNotFound() {
+    void shouldThrowRecordNotFound_WhenJoinActivityUserNotFound() {
         when(postRepository.findById(2L)).thenReturn(Optional.of(testActivity));
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
@@ -281,7 +279,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldAddAttendee_WhenJoinActivity() {
+    void shouldAddAttendee_WhenJoinActivity() {
         testActivity.setAttendees(new ArrayList<>());
         friendUser.setAttendedActivities(new ArrayList<>());
 
@@ -300,7 +298,7 @@ class PostServiceTest {
     // deletePostAsAdmin ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenDeletePostAsAdminNotFound() {
+    void shouldThrowRecordNotFound_WhenDeletePostAsAdminNotFound() {
         when(postRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class,
@@ -308,7 +306,7 @@ class PostServiceTest {
     }
 
     @Test
-    public void shouldDeletePost_WhenAdmin() {
+    void shouldDeletePost_WhenAdmin() {
         when(postRepository.findById(1L)).thenReturn(Optional.of(testHelpRequest));
 
         postService.deletePostAsAdmin(1L);

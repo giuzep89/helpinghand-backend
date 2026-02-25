@@ -40,7 +40,7 @@ class ChatServiceTest {
     private Chat testChat;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testUser = new User();
         testUser.setUsername("testuser");
         testUser.setEmail("test@test.com");
@@ -60,17 +60,15 @@ class ChatServiceTest {
     // createChat ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenCreateChatCurrentUserNotFound() {
-        //arrange
+    void shouldThrowRecordNotFound_WhenCreateChatCurrentUserNotFound() {
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
-        //act & assert
         assertThrows(RecordNotFoundException.class,
                 () -> chatService.createChat(2L, "unknown"));
     }
 
     @Test
-    public void shouldThrowRecordNotFound_WhenCreateChatRecipientNotFound() {
+    void shouldThrowRecordNotFound_WhenCreateChatRecipientNotFound() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -79,7 +77,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldReturnExistingChat_WhenChatAlreadyExistsAsUserOne() {
+    void shouldReturnExistingChat_WhenChatAlreadyExistsAsUserOne() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(2L)).thenReturn(Optional.of(otherUser));
         when(chatRepository.findByUserOneAndUserTwo(testUser, otherUser)).thenReturn(Optional.of(testChat));
@@ -93,7 +91,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldReturnExistingChat_WhenChatAlreadyExistsAsUserTwo() {
+    void shouldReturnExistingChat_WhenChatAlreadyExistsAsUserTwo() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(2L)).thenReturn(Optional.of(otherUser));
         when(chatRepository.findByUserOneAndUserTwo(testUser, otherUser)).thenReturn(Optional.empty());
@@ -107,7 +105,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldSaveAndReturnDto_WhenCreateNewChat() {
+    void shouldSaveAndReturnDto_WhenCreateNewChat() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(userRepository.findById(2L)).thenReturn(Optional.of(otherUser));
         when(chatRepository.findByUserOneAndUserTwo(testUser, otherUser)).thenReturn(Optional.empty());
@@ -124,7 +122,7 @@ class ChatServiceTest {
     // getUserChats ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenGetUserChatsUserNotFound() {
+    void shouldThrowRecordNotFound_WhenGetUserChatsUserNotFound() {
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class,
@@ -132,7 +130,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldReturnEmptyList_WhenUserHasNoChats() {
+    void shouldReturnEmptyList_WhenUserHasNoChats() {
         testUser.setInitiatedChats(new ArrayList<>());
         testUser.setReceivedChats(new ArrayList<>());
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
@@ -143,7 +141,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldReturnAllChats_WhenUserHasInitiatedAndReceivedChats() {
+    void shouldReturnAllChats_WhenUserHasInitiatedAndReceivedChats() {
         Chat receivedChat = new Chat(otherUser, testUser);
         ReflectionTestUtils.setField(receivedChat, "id", 20L);
 
@@ -159,7 +157,7 @@ class ChatServiceTest {
     // getChat ------------------
 
     @Test
-    public void shouldThrowRecordNotFound_WhenGetChatUserNotFound() {
+    void shouldThrowRecordNotFound_WhenGetChatUserNotFound() {
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class,
@@ -167,7 +165,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldThrowRecordNotFound_WhenGetChatNotFound() {
+    void shouldThrowRecordNotFound_WhenGetChatNotFound() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(chatRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -176,7 +174,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldThrowUnauthorized_WhenGetChatUserNotParticipant() {
+    void shouldThrowUnauthorized_WhenGetChatUserNotParticipant() {
         User thirdUser = new User();
         thirdUser.setUsername("thirduser");
         ReflectionTestUtils.setField(thirdUser, "id", 99L);
@@ -189,7 +187,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldReturnChat_WhenUserIsUserOne() {
+    void shouldReturnChat_WhenUserIsUserOne() {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(testUser));
         when(chatRepository.findById(10L)).thenReturn(Optional.of(testChat));
 
@@ -201,7 +199,7 @@ class ChatServiceTest {
     }
 
     @Test
-    public void shouldReturnChat_WhenUserIsUserTwo() {
+    void shouldReturnChat_WhenUserIsUserTwo() {
         when(userRepository.findByUsername("otheruser")).thenReturn(Optional.of(otherUser));
         when(chatRepository.findById(10L)).thenReturn(Optional.of(testChat));
 
