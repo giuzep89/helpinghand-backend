@@ -99,7 +99,7 @@ The backend requires two environment variables; the PostgreSQL password is the o
 5. Add this line in the Environment variable input field, replacing the lowercase "password" with whichever password you set up earlier in pgAdmin:
 
 ```
-   POSTGRESQL_PASSWORD=password;JWT_SECRET=dGhpc2lzYXZlcnlsb25nc2VjcmV0a2V5Zm9yand0dGhhdGlzYXRsZWFzdDI1NmJpdHNsb25n
+   POSTGRESQL_PASSWORD=password;JWT_SECRET=dGhpc2lzYXZlcnlsb25nc2VjcmV0a2V5Zm9yand0dGhhdGlzYXRsZWFzdDI1NmJpdHNsb25n;DATABASE_URL=jdbc:postgresql://localhost:5432/helpinghand
 ```
 
 6. Apply -> Ok
